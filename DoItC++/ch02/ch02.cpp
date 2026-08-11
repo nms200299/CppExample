@@ -2,23 +2,23 @@
 * 작성자 : 2N (nms200299)
 * 작성일 : 2026.08.10
 * 
-1. ANSI 입출력
-    cin, cout
-2. 유니코드 입출력
-    wcin, wcout
-3. 실수 출력
-    numeric_limits
-4. 지역/전역 변수 참조
-    ::
-5. 명시적 형변환
-    int()
-6. string 자료형
-    string
-    wstring
-7. 사용자 정의 리터럴
-    operator
-8. bitset 라이브러리 활용
-    bitset
+* 1. ANSI 입출력
+*     cin, cout
+* 2. 유니코드 입출력
+*     wcin, wcout
+* 3. 실수 출력
+*     numeric_limits
+* 4. 지역/전역 변수 참조
+*     ::
+* 5. 명시적 형변환
+*     int()
+* 6. string 자료형
+*     string
+*     wstring
+* 7. 사용자 정의 리터럴
+*     operator
+* 8. bitset 라이브러리 활용
+*     bitset
 */
 
 #include <iostream>
