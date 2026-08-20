@@ -9,6 +9,9 @@
 * 4. 가상 함수 및 생성자
 * 5. 값을 전달받는 생성자
 * 6. 멤버 변수 초기화
+* 7. 복사 생성자 (얕은 복사)
+* 8. 복사 생성자 및 소멸자 (깊은 복사)
+* 9. 가상 소멸자
 */
 
 #include <iostream>
@@ -131,10 +134,72 @@ private:
     const int iValConst;
     int* piValPtr;
     char* piDnStr;
-
 };
 // 6. 멤버 변수 초기화
 
+class Cls10 {
+public:
+    char* piDnStr;
+    Cls10() {
+        piDnStr = new char[4];
+        piDnStr[0] = 'A';
+        piDnStr[1] = 'B';
+        piDnStr[2] = 'C';
+        piDnStr[3] = '\0';
+    }
+    void Print() {
+        std::cout << "Cls10 " << static_cast<void*>(piDnStr) << " " << piDnStr << std::endl;
+    };
+};
+// 7. 복사 생성자 (얕은 복사, 이중 소멸 문제로 소멸자 X)
+
+class Cls11 {
+public:
+    char* piDnStr;
+    Cls11() {
+        piDnStr = new char[4];
+        piDnStr[0] = 'A';
+        piDnStr[1] = 'B';
+        piDnStr[2] = 'C';
+        piDnStr[3] = '\0';
+    }
+    Cls11(const Cls11 &ref) {
+        int len = std::strlen(ref.piDnStr);
+        piDnStr = new char[len +1];
+        strcpy_s(piDnStr, len+1, ref.piDnStr);
+    }
+    ~Cls11() {
+        delete[] piDnStr;
+    } // 소멸자
+    void Print() {
+        std::cout << "Cls11 " << static_cast<void*>(piDnStr) << " " << piDnStr << std::endl;
+    };
+};
+// 8. 복사 생성자 (깊은 복사)
+
+
+
+class Cls12 {
+public:
+    Cls12() {
+        std::cout << "Cls12 생성자" << std::endl;
+    }
+    virtual ~Cls12() {
+        std::cout << "Cls12 소멸자" << std::endl;
+    }
+};
+
+class Cls13 : public Cls12 {
+public:
+    Cls13() {
+        std::cout << "Cls13 생성자" << std::endl;
+    }
+    virtual ~Cls13() {
+        std::cout << "Cls13 소멸자" << std::endl;
+    }
+};
+
+// 9. 가상 소멸자
 
 int main() {
     /* ================================================*/
@@ -168,6 +233,28 @@ int main() {
 
     std::cout << "\n[6. 멤버 변수 초기화]\n";
     Cls9 Class10;
+
+    std::cout << "\n[7. 복사 생성자 (얕은 복사)]\n";
+    Cls10 Class11;
+    Class11.Print();
+    Cls10 Class12 = Class11;
+    Class11.piDnStr[0] = 'B';
+    Class12.Print();
+    Class11.Print();
+
+    std::cout << "\n[8. 복사 생성자 및 소멸자 (깊은 복사)]\n";
+    Cls11 Class13;
+    Class13.Print();
+    Cls11 Class14 = Class13;
+    Class14.piDnStr[0] = 'B';
+    Class14.Print();
+    Class13.Print();
+
+    std::cout << "\n[9. 가상 소멸자]\n";
+    Cls12 *Class15 = new Cls13();
+    delete Class15;
+    // 가상 소멸자로 상속 관계에서 부모 객체가 소멸할 때 자식 객체의 소멸자도 호출됨
+
 
     system("pause");
 }
